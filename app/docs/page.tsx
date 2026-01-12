@@ -27,6 +27,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
     },
   ) {
     return (
+      // <DocsPage full={true} tableOfContent={{enabled: false}} {...props}>
       <DocsPage toc={toc} {...props}>
         <title>{frontmatter.title}</title>
         <meta name="description" content={frontmatter.description} />

@@ -1,32 +1,66 @@
 ---
-title: Hello World
-description: |
-  Your first `document`
-  You'll love it!
+title: Introduction
+description: Welcome to Tasteey - A premium collection of high-performance UI components.
 ---
 
-Hey there! Fumadocs is the docs framework that also works on React Router!
+import { Cpu, Paintbrush, Zap, Box } from 'lucide-react';
 
-## Heading
+# Welcome to Tasteey
 
-Hello World
+**Tasteey** is a modern, flexible, and high-performance UI component library built for React. It leverages the power of **Tailwind CSS** for styling and **Framer Motion** for silky smooth animations.
+
+<Callout title="Ready to build?" type="info">
+  Tasteey is designed to be copy-pasted directly into your project. You own the code.
+</Callout>
+
+## Why Tasteey?
+
+We focused on three core pillars when building this library:
 
 <Cards>
-  <Card title="Learn more about React Router" href="https://reactrouter.com" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
+  <Card
+    icon={<Zap />}
+    href="/docs/components"
+    title="Performance First"
+    description="Components are optimized for speed and minimal bundle size impact."
+  />
+  <Card
+    icon={<Paintbrush />}
+    href="/docs/components"
+    title="Truly Customizable"
+    description="Styled with Tailwind CSS, meaning you can easily override any style using utility classes."
+  />
+  <Card
+    icon={<Cpu />}
+    href="/docs/components"
+    title="Animation Ready"
+    description="Built-in support for Framer Motion, giving your UI life without the complexity."
+  />
 </Cards>
 
-```ts
-console.log("I love React!");
+## Explore Components
+
+Dive into our growing collection of components.
+
+<Cards>
+  <Card
+    icon={<Box />}
+    href="/docs/terminal"
+    title="Terminal"
+    description="A fully functional, themeable terminal component with typing effects."
+  />
+  <Card
+    icon={<Box />}
+    href="/docs/hero"
+    title="Hero Sections"
+    description="Eye-catching hero sections to grab your visitor's attention immediately."
+  />
+</Cards>
+
+## Getting Started
+
+To start using Tasteey in your project, simply browse the components, copy the code, and paste it into your application. We recommend installing a few core dependencies to ensure everything works out of the box.
+
+```package-install
+npm install motion clsx tailwind-merge
 ```
-
-### Heading
-
-#### Heading
-
-| Head                            | Description                         |
-| ------------------------------- | ----------------------------------- |
-| `hello`                         | Hello World                         |
-| very **important**              | Hey                                 |
-| _Surprisingly_                  | Fumadocs                            |
-| very long text that looks weird | hello world hello world hello world |
