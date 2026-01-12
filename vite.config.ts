@@ -5,6 +5,8 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import mdx from 'fumadocs-mdx/vite';
 import * as MdxConfig from './source.config';
 
+
+
 export default defineConfig({
   plugins: [
     mdx(MdxConfig),
