@@ -1,0 +1,215 @@
+---
+title: Blur Text
+description: Use this component to blur text on your website.
+---
+
+import { BlurText } from '../../../app/components/TextBlocks/BluxText';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Badge } from '../../../app/components/ui/Badge';
+
+<Badge variant="secondary" className="mb-4">Text Animations</Badge>
+
+## Preview
+
+<Tabs items={['Preview', 'Code']}>
+  <Tab value="Preview">
+    <div className="flex items-center justify-center min-h-[200px] w-full py-10">
+      <BlurText hoverToReveal className="text-2xl font-bold">
+        Hover to reveal this secret text!
+      </BlurText>
+    </div>
+  </Tab>
+  <Tab value="Code">
+    ```tsx
+    import { BlurText } from '@/components/TextBlocks/BluxText';
+
+    export function Preview() {
+        return (
+            <BlurText hoverToReveal className="text-2xl font-bold">
+                Hover to reveal this secret text!
+            </BlurText>
+        );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Installation
+
+<Steps>
+  <Step>
+    ### Install dependencies
+    
+    ```bash
+    npx shadcn@latest add "https://tasteey.arya/r/blur-text"
+    ```
+    > [!NOTE]
+    > CLI installation is coming soon. Please use Manual installation for now.
+  </Step>
+  <Step>
+    ### Install dependencies
+    
+    ```bash
+    npm install motion clsx tailwind-merge
+    ```
+  </Step>
+      <Step>
+        ### Add util file
+        
+        Create `lib/utils.ts` if you haven't already.
+
+        ```ts title="lib/utils.ts"
+        import { type ClassValue, clsx } from 'clsx';
+        import { twMerge } from 'tailwind-merge';
+
+        export function cn(...inputs: ClassValue[]) {
+          return twMerge(clsx(inputs));
+        }
+        ```
+      </Step>
+      <Step>
+        ### Copy the source code
+        
+        Copy the code into `app/components/TextBlocks/BluxText.tsx`.
+
+        ```tsx title="app/components/TextBlocks/BluxText.tsx"
+        'use client';
+
+        import { cn } from '@/lib/utils';
+        import { motion, type HTMLMotionProps } from 'motion/react';
+        import React, { useState } from 'react';
+
+        interface BlurTextProps extends HTMLMotionProps<'div'> {
+          children: React.ReactNode;
+          blur?: string; // e.g. "10px"
+          hoverToReveal?: boolean;
+          clickToReveal?: boolean;
+          revealDuration?: number;
+          className?: string;
+        }
+
+        export function BlurText({
+          children,
+          blur = '8px',
+          hoverToReveal = false,
+          clickToReveal = false,
+          revealDuration = 0.3,
+          className,
+          animate,
+          ...props
+        }: BlurTextProps) {
+          const [isRevealed, setIsRevealed] = useState(false);
+          const isInteractive = hoverToReveal || clickToReveal;
+
+          const handleHoverStart = () => {
+            if (hoverToReveal) setIsRevealed(true);
+          };
+
+          const handleHoverEnd = () => {
+             if (hoverToReveal) setIsRevealed(false);
+          };
+
+          const handleClick = () => {
+            if (clickToReveal) setIsRevealed(!isRevealed);
+          };
+
+          const variants = {
+            blurred: {
+              filter: `blur(${blur})`,
+              opacity: 0.8,
+            },
+            revealed: {
+              filter: 'blur(0px)',
+              opacity: 1,
+            },
+          };
+
+          return (
+            <motion.div
+              className={cn('inline-block cursor-default relative', className, {
+                'cursor-pointer': clickToReveal,
+              })}
+              initial="blurred"
+              animate={isInteractive ? (isRevealed ? 'revealed' : 'blurred') : 'blurred'}
+              variants={variants}
+              transition={{ duration: revealDuration, ease: 'easeOut' }}
+              onHoverStart={handleHoverStart}
+              onHoverEnd={handleHoverEnd}
+              onClick={handleClick}
+              {...props}
+            >
+              {children}
+            </motion.div>
+          );
+        }
+        ```
+  </Step>
+</Steps>
+
+## Examples
+
+### Static Blur (Default)
+
+The text remains blurred unless customized.
+
+<div className="p-4 border rounded-md flex justify-center">
+  <BlurText>
+    Hidden wisdom lies within this text.
+  </BlurText>
+</div>
+
+### Reveal on Hover
+
+Pass `hoverToReveal` to clear the blur when the mouse enters.
+
+<div className="p-4 border rounded-md flex justify-center">
+  <BlurText hoverToReveal>
+    Hover over me to reveal the secret message!
+  </BlurText>
+</div>
+
+### Reveal on Click
+
+Pass `clickToReveal` to toggle the blur on click.
+
+<div className="p-4 border rounded-md flex justify-center">
+  <BlurText clickToReveal>
+    Click me to toggle visibility.
+  </BlurText>
+</div>
+
+### Custom Blur Intensity
+
+Adjust the `blur` prop to change the intensity (default is `8px`).
+
+<div className="p-4 border rounded-md space-y-4 flex flex-col items-center">
+  <BlurText blur="4px" hoverToReveal>
+    Light blur (4px)
+  </BlurText>
+  
+  <BlurText blur="12px" hoverToReveal>
+    Heavy blur (12px)
+  </BlurText>
+</div>
+
+### Reveal Duration
+
+Control the transition speed with `revealDuration` (default `0.3`s).
+
+<div className="p-4 border rounded-md flex justify-center">
+  <BlurText hoverToReveal revealDuration={1}>
+    Slow reveal (1s duration)...
+  </BlurText>
+</div>
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `children` | `ReactNode` | - | The content to be blurred. |
+| `blur` | `string` | `'8px'` | CSS blur value (e.g., '10px'). |
+| `hoverToReveal` | `boolean` | `false` | Whether to reveal text on hover. |
+| `clickToReveal` | `boolean` | `false` | Whether to toggle text visibility on click. |
+| `revealDuration` | `number` | `0.3` | Duration of the reveal animation in seconds. |
+| `className` | `string` | - | Additional CSS classes. |
