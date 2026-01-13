@@ -1,0 +1,174 @@
+---
+title: Long Text
+description: A text component that truncates content with a "read more" toggle.
+---
+
+import { LongText } from '../../../app/components/TextBlocks/LongText';
+import { ComponentPreview, Preview, CodeContent } from '../../../app/components/ComponentPreview';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+## Preview
+
+<ComponentPreview>
+  <Preview>
+    <div className="w-full max-w-md p-6 border rounded-lg bg-fd-card">
+      <LongText content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+    </div>
+  </Preview>
+  <CodeContent>
+    ```tsx
+    import { LongText } from '@/components/TextBlocks/LongText';
+
+    export function LongTextDemo() {
+      return (
+        <LongText content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+      );
+    }
+    ```
+  </CodeContent>
+</ComponentPreview>
+
+## Installation
+
+<Steps>
+  <Step>
+    ### Install dependencies
+    
+    ```bash
+    npm install motion clsx tailwind-merge
+    ```
+  </Step>
+  <Step>
+    ### Copy the source code
+    
+    Copy the code into `app/components/TextBlocks/LongText.tsx`.
+
+    ```tsx title="app/components/TextBlocks/LongText.tsx"
+    'use client';
+
+    import { cn } from '@/lib/utils';
+    import { motion, AnimatePresence } from 'motion/react';
+    import React, { useState } from 'react';
+
+    interface LongTextProps {
+      content: string;
+      limit?: number; // Word limit
+      moreText?: React.ReactNode;
+      lessText?: React.ReactNode;
+      className?: string;
+      textClassName?: string;
+      buttonClassName?: string;
+    }
+
+    export function LongText({
+      content,
+      limit = 30,
+      moreText = 'Show more',
+      lessText = 'Show less',
+      className,
+      textClassName,
+      buttonClassName,
+    }: LongTextProps) {
+      const [isExpanded, setIsExpanded] = useState(false);
+
+      const words = content.split(' ');
+      const shouldTruncate = words.length > limit;
+
+      const toggleExpanded = () => {
+        setIsExpanded(!isExpanded);
+      };
+
+      const displayedText = isExpanded || !shouldTruncate
+        ? content
+        : words.slice(0, limit).join(' ') + '...';
+
+      return (
+        <div className={cn("text-base leading-relaxed", className)}>
+          <motion.div
+            layout
+            className={cn("", textClassName)}
+          >
+            <AnimatePresence mode="popLayout" initial={false}>
+                <motion.div
+                    key={isExpanded ? 'expanded' : 'collapsed'}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                >
+                    {displayedText}
+                </motion.div>
+            </AnimatePresence>
+          </motion.div>
+
+          {shouldTruncate && (
+            <button
+              onClick={toggleExpanded}
+              className={cn(
+                "mt-2 text-sm font-medium text-blue-600 hover:text-blue-800 focus:outline-none transition-colors",
+                buttonClassName
+              )}
+            >
+              {isExpanded ? lessText : moreText}
+            </button>
+          )}
+        </div>
+      );
+    }
+    ```
+  </Step>
+</Steps>
+
+## Examples
+
+### Custom Word Limit
+
+Truncate after 10 words.
+
+<Preview>
+  <div className="max-w-md">
+    <LongText 
+      limit={10} 
+      content="This is a short example text that will be truncated very quickly because the limit is set low." 
+    />
+  </div>
+</Preview>
+
+### Custom Toggle Text
+
+Customize the "Show more" and "Show less" buttons.
+
+<Preview>
+  <div className="max-w-md">
+    <LongText 
+      moreText="Read full story →" 
+      lessText="Show less ↑"
+      content="The journey of a thousand miles begins with a single step. But sometimes that step is into a puddle. And then you have wet socks. And wet socks are the worst. Unless you have wool socks, then it's okay."
+    />
+  </div>
+</Preview>
+
+### Styled Button
+
+Apply custom styles to the toggle button.
+
+<Preview>
+  <div className="max-w-md">
+    <LongText 
+      buttonClassName="text-purple-600 font-bold border-b border-purple-600 hover:text-purple-700"
+      content="Design is not just what it looks like and feels like. Design is how it works. Good design is obvious. Bad design is cumbersome."
+    />
+  </div>
+</Preview>
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `content` | `string` | - | The text content to display. |
+| `limit` | `number` | `30` | Number of words to show before truncating. |
+| `moreText` | `ReactNode` | `'Show more'` | Content for the expand button. |
+| `lessText` | `ReactNode` | `'Show less'` | Content for the collapse button. |
+| `className` | `string` | - | Class for the main container. |
+| `textClassName` | `string` | - | Class for the text wrapper. |
+| `buttonClassName` | `string` | - | Class for the toggle button. |
