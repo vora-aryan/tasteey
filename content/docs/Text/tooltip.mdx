@@ -1,0 +1,532 @@
+---
+title: Tooltip
+description: A tooltip component that follows the cursor.
+---
+
+import { Tooltip } from '../../../app/components/TextBlocks/Tooltip';
+import { ComponentPreview, Preview, CodeContent } from '../../../app/components/ComponentPreview';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+export const richTooltipContent = (
+  <span className="flex flex-col gap-1">
+    <span className="font-semibold">User Experience</span>
+    <span className="text-xs text-muted-foreground">Functional & Beautiful</span>
+  </span>
+);
+
+## Preview
+
+<ComponentPreview>
+  <Preview>
+    <div className="flex items-center justify-center min-h-[200px] w-full py-10 px-4">
+      <p className="text-xl leading-relaxed text-center max-w-2xl text-fd-foreground">
+        Welcome to the <Tooltip content="A modern documentation site">
+          <span className="font-bold text-fd-primary cursor-pointer underline decoration-dashed underline-offset-4 decoration-fd-primary/50 hover:decoration-fd-primary transition-all">documentation</span>
+        </Tooltip>. 
+        Here you can discover <Tooltip content="Reusable building blocks">
+          <span className="font-bold text-blue-500 cursor-pointer underline decoration-dashed underline-offset-4 decoration-blue-500/50 hover:decoration-blue-500 transition-all">components</span>
+        </Tooltip> to build stunning <Tooltip content={richTooltipContent}>
+          <span className="font-bold text-purple-500 cursor-pointer underline decoration-dashed underline-offset-4 decoration-purple-500/50 hover:decoration-purple-500 transition-all">experiences</span>
+        </Tooltip> with minimal effort.
+      </p>
+    </div>
+  </Preview>
+  <CodeContent>
+    <Tabs items={["TS", "JS"]}>
+      <Tab value="TS">
+        ```tsx
+        import { Tooltip } from '@/components/TextBlocks/Tooltip';
+
+        export function TooltipDemo() {
+          return (
+            <div className="flex flex-col gap-8 w-full max-w-2xl">
+              <p className="text-base text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Edge Detection:</strong> This tooltip at the <Tooltip content="I should appear below the text because there is no space above!">
+                  <span className="font-medium text-foreground underline decoration-dashed cursor-pointer">very top</span>
+                </Tooltip> demonstrates how the component automatically adjusts its position when it detects the viewport boundary.
+              </p>
+
+              <p className="text-base text-muted-foreground leading-relaxed">
+                This is a middle paragraph where tooltips behave normally. You can use them to provide definitions for <Tooltip content="A tool or device for a specific task">
+                  <span className="font-medium text-blue-500 underline decoration-dashed cursor-pointer">terminology</span>
+                </Tooltip> without breaking the flow of reading.
+              </p>
+
+              <p className="text-base text-muted-foreground leading-relaxed">
+                And of course, we still support <Tooltip content={richTooltipContent}>
+                  <span className="font-medium text-purple-500 underline decoration-dashed cursor-pointer">rich content</span>
+                </Tooltip> within the tooltips.
+              </p>
+            </div>
+          );
+        }
+        ```
+      </Tab>
+      <Tab value="JS">
+        ```jsx
+        import { Tooltip } from '@/components/TextBlocks/Tooltip';
+
+        export function TooltipDemo() {
+          return (
+            <div className="flex flex-col gap-8 w-full max-w-2xl">
+              <p className="text-base text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Edge Detection:</strong> This tooltip at the <Tooltip content="I should appear below the text because there is no space above!">
+                  <span className="font-medium text-foreground underline decoration-dashed cursor-pointer">very top</span>
+                </Tooltip> demonstrates how the component automatically adjusts its position when it detects the viewport boundary.
+              </p>
+
+              <p className="text-base text-muted-foreground leading-relaxed">
+                This is a middle paragraph where tooltips behave normally. You can use them to provide definitions for <Tooltip content="A tool or device for a specific task">
+                  <span className="font-medium text-blue-500 underline decoration-dashed cursor-pointer">terminology</span>
+                </Tooltip> without breaking the flow of reading.
+              </p>
+
+              <p className="text-base text-muted-foreground leading-relaxed">
+                And of course, we still support <Tooltip content={richTooltipContent}>
+                  <span className="font-medium text-purple-500 underline decoration-dashed cursor-pointer">rich content</span>
+                </Tooltip> within the tooltips.
+              </p>
+            </div>
+          );
+        }
+        ```
+      </Tab>
+    </Tabs>
+  </CodeContent>
+</ComponentPreview>
+
+## Installation
+
+<Steps>
+  <Step>
+    ### Install dependencies
+    
+    ```bash
+    npm install motion clsx tailwind-merge
+    ```
+  </Step>
+  <Step>
+    ### Copy the source code
+    
+    Copy the code into `app/components/TextBlocks/Tooltip.tsx` (for TS) or `app/components/TextBlocks/Tooltip.jsx` (for JS).
+
+    <Tabs items={["TS", "JS"]}>
+      <Tab value="TS">
+        ```tsx title="app/components/TextBlocks/Tooltip.tsx"
+        "use client";
+        import React, { useState, useRef, useEffect } from "react";
+        import { motion, AnimatePresence } from "motion/react";
+        import { cn } from "@/lib/utils";
+
+        export const Tooltip = ({
+          content,
+          children,
+          containerClassName,
+        }: {
+          content: string | React.ReactNode;
+          children: React.ReactNode;
+          containerClassName?: string;
+        }) => {
+          const [isVisible, setIsVisible] = useState(false);
+          const [mouse, setMouse] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+          const [height, setHeight] = useState(0);
+          const [position, setPosition] = useState<{ x: number; y: number }>({
+            x: 0,
+            y: 0,
+          });
+          const contentRef = useRef<HTMLSpanElement>(null);
+          const containerRef = useRef<HTMLSpanElement>(null);
+
+          useEffect(() => {
+            if (isVisible && contentRef.current) {
+              setHeight(contentRef.current.scrollHeight);
+            }
+          }, [isVisible, content]);
+
+          const calculatePosition = (mouseX: number, mouseY: number) => {
+            if (!contentRef.current || !containerRef.current)
+              return { x: mouseX + 12, y: mouseY + 12 };
+
+            const tooltip = contentRef.current;
+            const container = containerRef.current;
+            const containerRect = container.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            // Get tooltip dimensions
+            const tooltipWidth = 240; // min-w-[15rem] = 240px
+            const tooltipHeight = tooltip.scrollHeight;
+
+            // Calculate absolute position relative to viewport
+            const absoluteX = containerRect.left + mouseX;
+            const absoluteY = containerRect.top + mouseY;
+
+            let finalX = mouseX + 12;
+            let finalY = mouseY + 12;
+
+            // Check if tooltip goes beyond right edge
+            if (absoluteX + 12 + tooltipWidth > viewportWidth) {
+              finalX = mouseX - tooltipWidth - 12;
+            }
+
+            // Check if tooltip goes beyond left edge
+            if (absoluteX + finalX < 0) {
+              finalX = -containerRect.left + 12;
+            }
+
+            // Check if tooltip goes beyond bottom edge
+            if (absoluteY + 12 + tooltipHeight > viewportHeight) {
+              finalY = mouseY - tooltipHeight - 12;
+            }
+
+            // Check if tooltip goes beyond top edge
+            if (absoluteY + finalY < 0) {
+              finalY = -containerRect.top + 12;
+            }
+
+            return { x: finalX, y: finalY };
+          };
+
+          const updateMousePosition = (mouseX: number, mouseY: number) => {
+            setMouse({ x: mouseX, y: mouseY });
+            const newPosition = calculatePosition(mouseX, mouseY);
+            setPosition(newPosition);
+          };
+
+          const handleMouseEnter = (e: React.MouseEvent<HTMLSpanElement>) => {
+            setIsVisible(true);
+            const rect = e.currentTarget.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            updateMousePosition(mouseX, mouseY);
+          };
+
+          const handleMouseLeave = () => {
+            setMouse({ x: 0, y: 0 });
+            setPosition({ x: 0, y: 0 });
+            setIsVisible(false);
+          };
+
+          const handleMouseMove = (e: React.MouseEvent<HTMLSpanElement>) => {
+            if (!isVisible) return;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            updateMousePosition(mouseX, mouseY);
+          };
+
+          const handleTouchStart = (e: React.TouchEvent<HTMLSpanElement>) => {
+            const touch = e.touches[0];
+            const rect = e.currentTarget.getBoundingClientRect();
+            const mouseX = touch.clientX - rect.left;
+            const mouseY = touch.clientY - rect.top;
+            updateMousePosition(mouseX, mouseY);
+            setIsVisible(true);
+          };
+
+          const handleTouchEnd = () => {
+             // Delay hiding to allow for tap interaction
+             setTimeout(() => {
+               setIsVisible(false);
+               setMouse({ x: 0, y: 0 });
+               setPosition({ x: 0, y: 0 });
+             }, 2000);
+           };
+
+          const handleClick = (e: React.MouseEvent<HTMLSpanElement>) => {
+            // Toggle visibility on click for mobile devices
+            if (window.matchMedia("(hover: none)").matches) {
+              e.preventDefault();
+              if (isVisible) {
+                setIsVisible(false);
+                setMouse({ x: 0, y: 0 });
+                setPosition({ x: 0, y: 0 });
+              } else {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+                updateMousePosition(mouseX, mouseY);
+                setIsVisible(true);
+              }
+            }
+          };
+
+          // Update position when tooltip becomes visible or content changes
+          useEffect(() => {
+            if (isVisible && contentRef.current) {
+              const newPosition = calculatePosition(mouse.x, mouse.y);
+              setPosition(newPosition);
+            }
+          }, [isVisible, height, mouse.x, mouse.y]);
+
+          return (
+            <span
+              ref={containerRef}
+              className={cn("relative inline-block", containerClassName)}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              onClick={handleClick}
+            >
+              {children}
+              <AnimatePresence>
+                {isVisible && (
+                  <motion.span
+                    key={String(isVisible)}
+                    initial={{ height: 0, opacity: 1 }}
+                    animate={{ height, opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 20,
+                    }}
+                    className="pointer-events-none absolute z-50 min-w-[15rem] overflow-hidden rounded-md border border-transparent bg-white shadow-sm ring-1 shadow-black/5 ring-black/5 dark:bg-neutral-900 dark:shadow-white/10 dark:ring-white/5"
+                    style={{
+                      top: position.y,
+                      left: position.x,
+                    }}
+                  >
+                    <span
+                      ref={contentRef}
+                      className="block p-2 text-sm text-neutral-600 md:p-4 dark:text-neutral-400"
+                    >
+                      {content}
+                    </span>
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </span>
+          );
+        };
+        ```
+      </Tab>
+      <Tab value="JS">
+        ```jsx title="app/components/TextBlocks/Tooltip.jsx"
+        "use client";
+        import React, { useState, useRef, useEffect } from "react";
+        import { motion, AnimatePresence } from "motion/react";
+        import { cn } from "@/lib/utils";
+
+        export const Tooltip = ({
+          content,
+          children,
+          containerClassName,
+        }) => {
+          const [isVisible, setIsVisible] = useState(false);
+          const [mouse, setMouse] = useState({ x: 0, y: 0 });
+          const [height, setHeight] = useState(0);
+          const [position, setPosition] = useState({
+            x: 0,
+            y: 0,
+          });
+          const contentRef = useRef(null);
+          const containerRef = useRef(null);
+
+          useEffect(() => {
+            if (isVisible && contentRef.current) {
+              setHeight(contentRef.current.scrollHeight);
+            }
+          }, [isVisible, content]);
+
+          const calculatePosition = (mouseX, mouseY) => {
+            if (!contentRef.current || !containerRef.current)
+              return { x: mouseX + 12, y: mouseY + 12 };
+
+            const tooltip = contentRef.current;
+            const container = containerRef.current;
+            const containerRect = container.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            // Get tooltip dimensions
+            const tooltipWidth = 240; // min-w-[15rem] = 240px
+            const tooltipHeight = tooltip.scrollHeight;
+
+            // Calculate absolute position relative to viewport
+            const absoluteX = containerRect.left + mouseX;
+            const absoluteY = containerRect.top + mouseY;
+
+            let finalX = mouseX + 12;
+            let finalY = mouseY + 12;
+
+            // Check if tooltip goes beyond right edge
+            if (absoluteX + 12 + tooltipWidth > viewportWidth) {
+              finalX = mouseX - tooltipWidth - 12;
+            }
+
+            // Check if tooltip goes beyond left edge
+            if (absoluteX + finalX < 0) {
+              finalX = -containerRect.left + 12;
+            }
+
+            // Check if tooltip goes beyond bottom edge
+            if (absoluteY + 12 + tooltipHeight > viewportHeight) {
+              finalY = mouseY - tooltipHeight - 12;
+            }
+
+            // Check if tooltip goes beyond top edge
+            if (absoluteY + finalY < 0) {
+              finalY = -containerRect.top + 12;
+            }
+
+            return { x: finalX, y: finalY };
+          };
+
+          const updateMousePosition = (mouseX, mouseY) => {
+            setMouse({ x: mouseX, y: mouseY });
+            const newPosition = calculatePosition(mouseX, mouseY);
+            setPosition(newPosition);
+          };
+
+          const handleMouseEnter = (e) => {
+            setIsVisible(true);
+            const rect = e.currentTarget.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            updateMousePosition(mouseX, mouseY);
+          };
+
+          const handleMouseLeave = () => {
+            setMouse({ x: 0, y: 0 });
+            setPosition({ x: 0, y: 0 });
+            setIsVisible(false);
+          };
+
+          const handleMouseMove = (e) => {
+            if (!isVisible) return;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            updateMousePosition(mouseX, mouseY);
+          };
+
+          const handleTouchStart = (e) => {
+            const touch = e.touches[0];
+            const rect = e.currentTarget.getBoundingClientRect();
+            const mouseX = touch.clientX - rect.left;
+            const mouseY = touch.clientY - rect.top;
+            updateMousePosition(mouseX, mouseY);
+            setIsVisible(true);
+          };
+
+          const handleTouchEnd = () => {
+             // Delay hiding to allow for tap interaction
+             setTimeout(() => {
+               setIsVisible(false);
+               setMouse({ x: 0, y: 0 });
+               setPosition({ x: 0, y: 0 });
+             }, 2000);
+           };
+
+          const handleClick = (e) => {
+            // Toggle visibility on click for mobile devices
+            if (window.matchMedia("(hover: none)").matches) {
+              e.preventDefault();
+              if (isVisible) {
+                setIsVisible(false);
+                setMouse({ x: 0, y: 0 });
+                setPosition({ x: 0, y: 0 });
+              } else {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+                updateMousePosition(mouseX, mouseY);
+                setIsVisible(true);
+              }
+            }
+          };
+
+          // Update position when tooltip becomes visible or content changes
+          useEffect(() => {
+            if (isVisible && contentRef.current) {
+              const newPosition = calculatePosition(mouse.x, mouse.y);
+              setPosition(newPosition);
+            }
+          }, [isVisible, height, mouse.x, mouse.y]);
+
+          return (
+            <span
+              ref={containerRef}
+              className={cn("relative inline-block", containerClassName)}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              onClick={handleClick}
+            >
+              {children}
+              <AnimatePresence>
+                {isVisible && (
+                  <motion.span
+                    key={String(isVisible)}
+                    initial={{ height: 0, opacity: 1 }}
+                    animate={{ height, opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 20,
+                    }}
+                    className="pointer-events-none absolute z-50 min-w-[15rem] overflow-hidden rounded-md border border-transparent bg-white shadow-sm ring-1 shadow-black/5 ring-black/5 dark:bg-neutral-900 dark:shadow-white/10 dark:ring-white/5"
+                    style={{
+                      top: position.y,
+                      left: position.x,
+                    }}
+                  >
+                    <span
+                      ref={contentRef}
+                      className="block p-2 text-sm text-neutral-600 md:p-4 dark:text-neutral-400"
+                    >
+                      {content}
+                    </span>
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </span>
+          );
+        };
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+</Steps>
+
+## Examples
+
+### Rich Content
+
+The tooltip can accept any React node as content.
+
+<Preview>
+  <div className="flex items-center justify-center min-h-[200px] w-full">
+    <Tooltip 
+      content={
+        <div className="space-y-2">
+            <p className="font-bold text-black dark:text-white">Rich Tooltip</p>
+            <p>You can include text, images, or other components.</p>
+            <div className="flex gap-2 text-xs">
+                <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded">Tag 1</span>
+                <span className="bg-green-100 text-green-800 px-2 py-0.5 rounded">Tag 2</span>
+            </div>
+        </div>
+      }
+    >
+      <button className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors">
+        Hover for details
+      </button>
+    </Tooltip>
+  </div>
+</Preview>
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `content` | `string \| ReactNode` | - | The content to display inside the tooltip. |
+| `children` | `ReactNode` | - | The element to hover/trigger the tooltip. |
+| `containerClassName` | `string` | - | Additional classes for the tooltip container. |

@@ -6,6 +6,7 @@ description: Use this component to blur text on your website.
 import { BlurText } from '../../../app/components/TextBlocks/BluxText';
 import { ComponentPreview, Preview, CodeContent } from '../../../app/components/ComponentPreview';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
 ## Preview
 
@@ -18,17 +19,34 @@ import { Step, Steps } from 'fumadocs-ui/components/steps';
     </div>
   </Preview>
   <CodeContent>
-    ```tsx
-    import { BlurText } from '@/components/TextBlocks/BluxText';
+    <Tabs items={["TS", "JS"]}>
+      <Tab value="TS">
+        ```tsx
+        import { BlurText } from '@/components/TextBlocks/BluxText';
 
-    export function Preview() {
-        return (
-            <BlurText hoverToReveal className="text-2xl font-bold">
-                Hover to reveal this secret text!
-            </BlurText>
-        );
-    }
-    ```
+        export function Preview() {
+            return (
+                <BlurText hoverToReveal className="text-2xl font-bold">
+                    Hover to reveal this secret text!
+                </BlurText>
+            );
+        }
+        ```
+      </Tab>
+      <Tab value="JS">
+        ```jsx
+        import { BlurText } from '@/components/TextBlocks/BluxText';
+
+        export function Preview() {
+            return (
+                <BlurText hoverToReveal className="text-2xl font-bold">
+                    Hover to reveal this secret text!
+                </BlurText>
+            );
+        }
+        ```
+      </Tab>
+    </Tabs>
   </CodeContent>
 </ComponentPreview>
 
@@ -59,79 +77,147 @@ import { Step, Steps } from 'fumadocs-ui/components/steps';
       <Step>
         ### Copy the source code
         
-        Copy the code into `app/components/TextBlocks/BluxText.tsx`.
+        Copy the code into `app/components/TextBlocks/BluxText.tsx` (for TS) or `app/components/TextBlocks/BluxText.jsx` (for JS).
 
-        ```tsx title="app/components/TextBlocks/BluxText.tsx"
-        'use client';
+        <Tabs items={["TS", "JS"]}>
+          <Tab value="TS">
+            ```tsx title="app/components/TextBlocks/BluxText.tsx"
+            'use client';
 
-        import { cn } from '@/lib/utils';
-        import { motion, type HTMLMotionProps } from 'motion/react';
-        import React, { useState } from 'react';
+            import { cn } from '@/lib/utils';
+            import { motion, type HTMLMotionProps } from 'motion/react';
+            import React, { useState } from 'react';
 
-        interface BlurTextProps extends HTMLMotionProps<'div'> {
-          children: React.ReactNode;
-          blur?: string; // e.g. "10px"
-          hoverToReveal?: boolean;
-          clickToReveal?: boolean;
-          revealDuration?: number;
-          className?: string;
-        }
+            interface BlurTextProps extends HTMLMotionProps<'div'> {
+              children: React.ReactNode;
+              blur?: string; // e.g. "10px"
+              hoverToReveal?: boolean;
+              clickToReveal?: boolean;
+              revealDuration?: number;
+              className?: string;
+            }
 
-        export function BlurText({
-          children,
-          blur = '8px',
-          hoverToReveal = false,
-          clickToReveal = false,
-          revealDuration = 0.3,
-          className,
-          animate,
-          ...props
-        }: BlurTextProps) {
-          const [isRevealed, setIsRevealed] = useState(false);
-          const isInteractive = hoverToReveal || clickToReveal;
+            export function BlurText({
+              children,
+              blur = '8px',
+              hoverToReveal = false,
+              clickToReveal = false,
+              revealDuration = 0.3,
+              className,
+              animate,
+              ...props
+            }: BlurTextProps) {
+              const [isRevealed, setIsRevealed] = useState(false);
+              const isInteractive = hoverToReveal || clickToReveal;
 
-          const handleHoverStart = () => {
-            if (hoverToReveal) setIsRevealed(true);
-          };
+              const handleHoverStart = () => {
+                if (hoverToReveal) setIsRevealed(true);
+              };
 
-          const handleHoverEnd = () => {
-             if (hoverToReveal) setIsRevealed(false);
-          };
+              const handleHoverEnd = () => {
+                 if (hoverToReveal) setIsRevealed(false);
+              };
 
-          const handleClick = () => {
-            if (clickToReveal) setIsRevealed(!isRevealed);
-          };
+              const handleClick = () => {
+                if (clickToReveal) setIsRevealed(!isRevealed);
+              };
 
-          const variants = {
-            blurred: {
-              filter: `blur(${blur})`,
-              opacity: 0.8,
-            },
-            revealed: {
-              filter: 'blur(0px)',
-              opacity: 1,
-            },
-          };
+              const variants = {
+                blurred: {
+                  filter: `blur(${blur})`,
+                  opacity: 0.8,
+                },
+                revealed: {
+                  filter: 'blur(0px)',
+                  opacity: 1,
+                },
+              };
 
-          return (
-            <motion.div
-              className={cn('inline-block cursor-default relative', className, {
-                'cursor-pointer': clickToReveal,
-              })}
-              initial="blurred"
-              animate={isInteractive ? (isRevealed ? 'revealed' : 'blurred') : 'blurred'}
-              variants={variants}
-              transition={{ duration: revealDuration, ease: 'easeOut' }}
-              onHoverStart={handleHoverStart}
-              onHoverEnd={handleHoverEnd}
-              onClick={handleClick}
-              {...props}
-            >
-              {children}
-            </motion.div>
-          );
-        }
-        ```
+              return (
+                <motion.div
+                  className={cn('inline-block cursor-default relative', className, {
+                    'cursor-pointer': clickToReveal,
+                  })}
+                  initial="blurred"
+                  animate={isInteractive ? (isRevealed ? 'revealed' : 'blurred') : 'blurred'}
+                  variants={variants}
+                  transition={{ duration: revealDuration, ease: 'easeOut' }}
+                  onHoverStart={handleHoverStart}
+                  onHoverEnd={handleHoverEnd}
+                  onClick={handleClick}
+                  {...props}
+                >
+                  {children}
+                </motion.div>
+              );
+            }
+            ```
+          </Tab>
+          <Tab value="JS">
+            ```jsx title="app/components/TextBlocks/BluxText.jsx"
+            'use client';
+
+            import { cn } from '@/lib/utils';
+            import { motion } from 'motion/react';
+            import React, { useState } from 'react';
+
+            export function BlurText({
+              children,
+              blur = '8px',
+              hoverToReveal = false,
+              clickToReveal = false,
+              revealDuration = 0.3,
+              className,
+              animate,
+              ...props
+            }) {
+              const [isRevealed, setIsRevealed] = useState(false);
+              const isInteractive = hoverToReveal || clickToReveal;
+
+              const handleHoverStart = () => {
+                if (hoverToReveal) setIsRevealed(true);
+              };
+
+              const handleHoverEnd = () => {
+                 if (hoverToReveal) setIsRevealed(false);
+              };
+
+              const handleClick = () => {
+                if (clickToReveal) setIsRevealed(!isRevealed);
+              };
+
+              const variants = {
+                blurred: {
+                  filter: `blur(${blur})`,
+                  opacity: 0.8,
+                },
+                revealed: {
+                  filter: 'blur(0px)',
+                  opacity: 1,
+                },
+              };
+
+              return (
+                <motion.div
+                  className={cn('inline-block cursor-default relative', className, {
+                    'cursor-pointer': clickToReveal,
+                  })}
+                  initial="blurred"
+                  animate={isInteractive ? (isRevealed ? 'revealed' : 'blurred') : 'blurred'}
+                  variants={variants}
+                  transition={{ duration: revealDuration, ease: 'easeOut' }}
+                  onHoverStart={handleHoverStart}
+                  onHoverEnd={handleHoverEnd}
+                  onClick={handleClick}
+                  {...props}
+                >
+                  {children}
+                </motion.div>
+              );
+            }
+            ```
+          </Tab>
+        </Tabs>
   </Step>
 </Steps>
 

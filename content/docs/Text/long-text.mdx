@@ -6,6 +6,7 @@ description: A text component that truncates content with a "read more" toggle.
 import { LongText } from '../../../app/components/TextBlocks/LongText';
 import { ComponentPreview, Preview, CodeContent } from '../../../app/components/ComponentPreview';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
 ## Preview
 
@@ -16,15 +17,30 @@ import { Step, Steps } from 'fumadocs-ui/components/steps';
     </div>
   </Preview>
   <CodeContent>
-    ```tsx
-    import { LongText } from '@/components/TextBlocks/LongText';
+    <Tabs items={["TS", "JS"]}>
+      <Tab value="TS">
+        ```tsx
+        import { LongText } from '@/components/TextBlocks/LongText';
 
-    export function LongTextDemo() {
-      return (
-        <LongText content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
-      );
-    }
-    ```
+        export function LongTextDemo() {
+          return (
+            <LongText content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+          );
+        }
+        ```
+      </Tab>
+      <Tab value="JS">
+        ```jsx
+        import { LongText } from '@/components/TextBlocks/LongText';
+
+        export function LongTextDemo() {
+          return (
+            <LongText content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+          );
+        }
+        ```
+      </Tab>
+    </Tabs>
   </CodeContent>
 </ComponentPreview>
 
@@ -41,81 +57,150 @@ import { Step, Steps } from 'fumadocs-ui/components/steps';
   <Step>
     ### Copy the source code
     
-    Copy the code into `app/components/TextBlocks/LongText.tsx`.
+    Copy the code into `app/components/TextBlocks/LongText.tsx` (for TS) or `app/components/TextBlocks/LongText.jsx` (for JS).
 
-    ```tsx title="app/components/TextBlocks/LongText.tsx"
-    'use client';
+    <Tabs items={["TS", "JS"]}>
+      <Tab value="TS">
+        ```tsx title="app/components/TextBlocks/LongText.tsx"
+        'use client';
 
-    import { cn } from '@/lib/utils';
-    import { motion, AnimatePresence } from 'motion/react';
-    import React, { useState } from 'react';
+        import { cn } from '@/lib/utils';
+        import { motion, AnimatePresence } from 'motion/react';
+        import React, { useState } from 'react';
 
-    interface LongTextProps {
-      content: string;
-      limit?: number; // Word limit
-      moreText?: React.ReactNode;
-      lessText?: React.ReactNode;
-      className?: string;
-      textClassName?: string;
-      buttonClassName?: string;
-    }
+        interface LongTextProps {
+          content: string;
+          limit?: number; // Word limit
+          moreText?: React.ReactNode;
+          lessText?: React.ReactNode;
+          className?: string;
+          textClassName?: string;
+          buttonClassName?: string;
+        }
 
-    export function LongText({
-      content,
-      limit = 30,
-      moreText = 'Show more',
-      lessText = 'Show less',
-      className,
-      textClassName,
-      buttonClassName,
-    }: LongTextProps) {
-      const [isExpanded, setIsExpanded] = useState(false);
+        export function LongText({
+          content,
+          limit = 30,
+          moreText = 'Show more',
+          lessText = 'Show less',
+          className,
+          textClassName,
+          buttonClassName,
+        }: LongTextProps) {
+          const [isExpanded, setIsExpanded] = useState(false);
 
-      const words = content.split(' ');
-      const shouldTruncate = words.length > limit;
+          const words = content.split(' ');
+          const shouldTruncate = words.length > limit;
 
-      const toggleExpanded = () => {
-        setIsExpanded(!isExpanded);
-      };
+          const toggleExpanded = () => {
+            setIsExpanded(!isExpanded);
+          };
 
-      const displayedText = isExpanded || !shouldTruncate
-        ? content
-        : words.slice(0, limit).join(' ') + '...';
+          const displayedText = isExpanded || !shouldTruncate
+            ? content
+            : words.slice(0, limit).join(' ') + '...';
 
-      return (
-        <div className={cn("text-base leading-relaxed", className)}>
-          <motion.div
-            layout
-            className={cn("", textClassName)}
-          >
-            <AnimatePresence mode="popLayout" initial={false}>
-                <motion.div
-                    key={isExpanded ? 'expanded' : 'collapsed'}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
+          return (
+            <div className={cn("text-base leading-relaxed", className)}>
+              <motion.div
+                layout
+                className={cn("", textClassName)}
+              >
+                <AnimatePresence mode="popLayout" initial={false}>
+                    <motion.div
+                        key={isExpanded ? 'expanded' : 'collapsed'}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        {displayedText}
+                    </motion.div>
+                </AnimatePresence>
+              </motion.div>
+
+              {shouldTruncate && (
+                <button
+                  onClick={toggleExpanded}
+                  className={cn(
+                    "mt-2 text-sm font-medium text-blue-600 hover:text-blue-800 focus:outline-none transition-colors",
+                    buttonClassName
+                  )}
                 >
-                    {displayedText}
-                </motion.div>
-            </AnimatePresence>
-          </motion.div>
-
-          {shouldTruncate && (
-            <button
-              onClick={toggleExpanded}
-              className={cn(
-                "mt-2 text-sm font-medium text-blue-600 hover:text-blue-800 focus:outline-none transition-colors",
-                buttonClassName
+                  {isExpanded ? lessText : moreText}
+                </button>
               )}
-            >
-              {isExpanded ? lessText : moreText}
-            </button>
-          )}
-        </div>
-      );
-    }
-    ```
+            </div>
+          );
+        }
+        ```
+      </Tab>
+      <Tab value="JS">
+        ```jsx title="app/components/TextBlocks/LongText.jsx"
+        'use client';
+
+        import { cn } from '@/lib/utils';
+        import { motion, AnimatePresence } from 'motion/react';
+        import React, { useState } from 'react';
+
+        export function LongText({
+          content,
+          limit = 30,
+          moreText = 'Show more',
+          lessText = 'Show less',
+          className,
+          textClassName,
+          buttonClassName,
+        }) {
+          const [isExpanded, setIsExpanded] = useState(false);
+
+          const words = content.split(' ');
+          const shouldTruncate = words.length > limit;
+
+          const toggleExpanded = () => {
+            setIsExpanded(!isExpanded);
+          };
+
+          const displayedText = isExpanded || !shouldTruncate
+            ? content
+            : words.slice(0, limit).join(' ') + '...';
+
+          return (
+            <div className={cn("text-base leading-relaxed", className)}>
+              <motion.div
+                layout
+                className={cn("", textClassName)}
+              >
+                <AnimatePresence mode="popLayout" initial={false}>
+                    <motion.div
+                        key={isExpanded ? 'expanded' : 'collapsed'}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        {displayedText}
+                    </motion.div>
+                </AnimatePresence>
+              </motion.div>
+
+              {shouldTruncate && (
+                <button
+                  onClick={toggleExpanded}
+                  className={cn(
+                    "mt-2 text-sm font-medium text-blue-600 hover:text-blue-800 focus:outline-none transition-colors",
+                    buttonClassName
+                  )}
+                >
+                  {isExpanded ? lessText : moreText}
+                </button>
+              )}
+            </div>
+          );
+        }
+        ```
+      </Tab>
+    </Tabs>
   </Step>
 </Steps>
 

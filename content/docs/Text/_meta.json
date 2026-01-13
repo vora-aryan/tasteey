@@ -2,6 +2,7 @@
   "title": "Animations",
   "pages": [
     "text-blur",
-    "long-text"
+    "long-text",
+    "tooltip"
   ]
 }
