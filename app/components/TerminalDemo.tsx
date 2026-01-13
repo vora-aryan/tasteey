@@ -40,36 +40,38 @@ export function TerminalDemo() {
   const [theme, setTheme] = React.useState<'dark' | 'light'>('dark');
 
   return (
-    <div className="w-full flex flex-col gap-6 p-8 bg-gray-950 rounded-lg items-center">
-      <div className="flex bg-gray-900 p-1 rounded-lg border border-gray-800">
+    <>
+    <div className="w-full relative bg-gray-950 rounded-lg overflow-hidden border border-gray-900">
+      {/* Theme Toggle - Top Right */}
+      <div className="absolute top-2 right-4 z-10 flex items-center gap-2 justify-center">
+        <span className="text-xs text-gray-400 font-medium">
+          {theme === 'dark' ? 'Dark' : 'Light'}
+        </span>
         <button
-          onClick={() => setTheme('dark')}
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           className={cn(
-            "px-4 py-1.5 rounded-md text-sm font-medium transition-colors",
-             theme === 'dark' ? "bg-gray-800 text-white shadow-sm" : "text-gray-400 hover:text-gray-200"
+            "relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500",
+            theme === 'dark' ? "bg-gray-700" : "bg-gray-200"
           )}
         >
-          Dark
-        </button>
-        <button
-           onClick={() => setTheme('light')}
-           className={cn(
-            "px-4 py-1.5 rounded-md text-sm font-medium transition-colors",
-             theme === 'light' ? "bg-gray-100 text-gray-900 shadow-sm" : "text-gray-400 hover:text-gray-200"
-          )}
-        >
-          Light
+          <span
+            className={cn(
+              "inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm",
+              theme === 'dark' ? "translate-x-4" : "translate-x-0.5"
+            )}
+          />
         </button>
       </div>
 
       <div className="w-full">
-        
         <Terminal 
-          key={theme} // Reset terminal when theme changes to restart typing effect
+          key={theme} // Reset terminal when theme changes
           commands={demoCommands} 
           theme={theme}
+          className="w-full max-w-none m-0 border-none shadow-none rounded-none"
         />
       </div>
     </div>
+    </>
   );
 }

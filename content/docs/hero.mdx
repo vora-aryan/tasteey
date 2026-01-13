@@ -4,13 +4,13 @@ description: The Hero component is used at the top of SaaS landing pages to comm
 ---
 
 import { Hero } from "../../app/components/Hero";
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { ComponentPreview, Preview, CodeContent } from '../../app/components/ComponentPreview';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 
 ## Preview
 
-<Tabs items={['Preview', 'Code']}>
-  <Tab value="Preview">
+<ComponentPreview>
+  <Preview>
     <div className="flex items-center justify-center w-full py-10">
         <Hero
         title="Build faster. Ship smarter."
@@ -19,8 +19,8 @@ import { Step, Steps } from 'fumadocs-ui/components/steps';
         secondaryCta={{ label: "View Demo", href: "#" }}
         />
     </div>
-  </Tab>
-  <Tab value="Code">
+  </Preview>
+  <CodeContent>
     ```tsx
     import { Hero } from "@/components/Hero";
 
@@ -35,8 +35,8 @@ import { Step, Steps } from 'fumadocs-ui/components/steps';
       );
     }
     ```
-  </Tab>
-</Tabs>
+  </CodeContent>
+</ComponentPreview>
 
 ## Installation
 

@@ -4,20 +4,20 @@ description: Use this component to blur text on your website.
 ---
 
 import { BlurText } from '../../../app/components/TextBlocks/BluxText';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { ComponentPreview, Preview, CodeContent } from '../../../app/components/ComponentPreview';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 
 ## Preview
 
-<Tabs items={['Preview', 'Code']}>
-  <Tab value="Preview">
+<ComponentPreview>
+  <Preview>
     <div className="flex items-center justify-center min-h-[200px] w-full py-10">
       <BlurText hoverToReveal className="text-2xl font-bold">
         Hover to reveal this secret text!
       </BlurText>
     </div>
-  </Tab>
-  <Tab value="Code">
+  </Preview>
+  <CodeContent>
     ```tsx
     import { BlurText } from '@/components/TextBlocks/BluxText';
 
@@ -29,8 +29,8 @@ import { Step, Steps } from 'fumadocs-ui/components/steps';
         );
     }
     ```
-  </Tab>
-</Tabs>
+  </CodeContent>
+</ComponentPreview>
 
 ## Installation
 
@@ -141,37 +141,37 @@ import { Step, Steps } from 'fumadocs-ui/components/steps';
 
 The text remains blurred unless customized.
 
-<div className="p-4 border rounded-md flex justify-center">
+<Preview>
   <BlurText>
     Hidden wisdom lies within this text.
   </BlurText>
-</div>
+</Preview>
 
 ### Reveal on Hover
 
 Pass `hoverToReveal` to clear the blur when the mouse enters.
 
-<div className="p-4 border rounded-md flex justify-center">
+<Preview>
   <BlurText hoverToReveal>
     Hover over me to reveal the secret message!
   </BlurText>
-</div>
+</Preview>
 
 ### Reveal on Click
 
 Pass `clickToReveal` to toggle the blur on click.
 
-<div className="p-4 border rounded-md flex justify-center">
+<Preview>
   <BlurText clickToReveal>
     Click me to toggle visibility.
   </BlurText>
-</div>
+</Preview>
 
 ### Custom Blur Intensity
 
 Adjust the `blur` prop to change the intensity (default is `8px`).
 
-<div className="p-4 border rounded-md space-y-4 flex flex-col items-center">
+<Preview className="flex-col space-y-4">
   <BlurText blur="4px" hoverToReveal>
     Light blur (4px)
   </BlurText>
@@ -179,17 +179,17 @@ Adjust the `blur` prop to change the intensity (default is `8px`).
   <BlurText blur="12px" hoverToReveal>
     Heavy blur (12px)
   </BlurText>
-</div>
+</Preview>
 
 ### Reveal Duration
 
 Control the transition speed with `revealDuration` (default `0.3`s).
 
-<div className="p-4 border rounded-md flex justify-center">
+<Preview>
   <BlurText hoverToReveal revealDuration={1}>
     Slow reveal (1s duration)...
   </BlurText>
-</div>
+</Preview>
 
 ## Props
 
