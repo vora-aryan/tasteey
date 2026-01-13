@@ -1,0 +1,140 @@
+---
+title: Hand written Text
+description: Text component that mimics human handwriting on authentic paper texture.
+---
+
+import { HandWrittenText } from '../../../app/components/TextBlocks/HandWrittenText';
+import { ComponentPreview, Preview, CodeContent } from '../../../app/components/ComponentPreview';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Preview
+
+<ComponentPreview>
+  <Preview>
+    <div className="flex items-center justify-center p-14 w-full text-center">
+        <HandWrittenText 
+            type="just"
+            aspectRatio="16/9"
+            className="text-5xl w-full flex items-center justify-center flex-col leading-[1.5]"
+        >
+            "Creativity is intelligence having fun." <br />
+             -Albert Einstein
+        </HandWrittenText>
+    </div>
+  </Preview>
+  <CodeContent>
+  <Tabs items={["TS", "JS"]}>
+  <Tab value="TS">
+    ```tsx
+    import { HandWrittenText } from '@/components/TextBlocks/HandWrittenText';
+
+    export function HandWrittenDemo() {
+      return (
+        <HandWrittenText 
+            type="just"
+            aspectRatio="16/9"
+            className="text-5xl w-full flex items-center justify-center flex-col leading-[1.5]"
+        >
+            "Creativity is intelligence having fun."
+             - Albert Einstein
+        </HandWrittenText>
+      );
+    }
+    ```
+  </Tab>
+  <Tab value="JS">
+    ```jsx
+    import { HandWrittenText } from '@/components/TextBlocks/HandWrittenText';
+
+    export function HandWrittenDemo() {
+      return (
+        <HandWrittenText 
+            type="just"
+            aspectRatio="16/9"
+            className="text-5xl w-full flex items-center justify-center flex-col leading-[1.5]"
+        >
+            "Creativity is intelligence having fun."
+             - Albert Einstein
+        </HandWrittenText>
+      );
+    }
+    ```
+  </Tab>
+  </Tabs>
+  </CodeContent>
+</ComponentPreview>
+
+## Examples
+
+### Aspect Ratio Options
+
+<ComponentPreview>
+  <Preview>
+    <div className="flex flex-col items-center justify-center gap-8 p-10 w-full text-center">
+        <HandWrittenText 
+            type="amatic"
+            aspectRatio="1/1"
+            color="black"
+            className="text-3xl w-64 flex items-center justify-center"
+        >
+            "The more you fu*k around
+            the more you figure out"
+        </HandWrittenText>
+    </div>
+  </Preview>
+  <CodeContent>
+  <Tabs items={["TS", "JS"]}>
+  <Tab value="TS">
+    ```tsx
+    import { HandWrittenText } from '@/components/TextBlocks/HandWrittenText';
+
+    export function SquareNoteDemo() {
+      return (
+        <HandWrittenText 
+            type="amatic"
+            aspectRatio="1/1"
+            color="black"
+            className="text-3xl w-64 flex items-center justify-center"
+        >
+            "The more you fu*k around
+            the more you figure out"
+        </HandWrittenText>
+      );
+    }
+    ```
+  </Tab>
+  <Tab value="JS">
+    ```jsx
+    import { HandWrittenText } from '@/components/TextBlocks/HandWrittenText';
+
+    export function SquareNoteDemo() {
+      return (
+        <HandWrittenText 
+            type="amatic"
+            aspectRatio="1/1"
+            color="black"
+            className="text-3xl w-64 flex items-center justify-center"
+        >
+            "The more you fu*k around
+            the more you figure out"
+        </HandWrittenText>
+      );
+    }
+    ```
+  </Tab>
+  </Tabs>
+  </CodeContent>
+</ComponentPreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `children` | `ReactNode` | - | The text content. |
+| `type` | `'amatic' \| 'just'` | `'just'` | The handwriting style to use. |
+| `aspectRatio` | `'1/1' \| '16/9' \| '4/3' \| '3/4' \| '21/9'` | - | Optional aspect ratio for the paper container. |
+| `image` | `string` | `'/paper-texture.jpg'` | Custom background image URL. |
+| `color` | `string` | `'#0036cbff'` | Custom text color. Defaults to ballpoint blue. |
+| `space` | `number` | `0.05` | Character spacing in `em`. |
+| `className` | `string` | - | Additional CSS classes. |
+| `as` | `React.ElementType` | `p` | The HTML element to render. |

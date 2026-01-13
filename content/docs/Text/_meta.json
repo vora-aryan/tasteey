@@ -4,6 +4,7 @@
     "text-blur",
     "long-text",
     "tooltip",
-    "gradient-text"
+    "gradient-text",
+    "handwritten-text"
   ]
 }
