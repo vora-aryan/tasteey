@@ -1,0 +1,386 @@
+---
+title: Gradient Text
+description: A text component with animated gradient background.
+---
+
+import { GradientText } from '../../../app/components/TextBlocks/GradientText';
+import { ComponentPreview, Preview, CodeContent } from '../../../app/components/ComponentPreview';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Preview
+
+<ComponentPreview>
+  <Preview>
+    <div className="flex items-center justify-center w-full p-10">
+      <GradientText
+        colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}
+        animationSpeed={3}
+        showBorder={false}
+        className="custom-class text-5xl"
+      >
+        Basic Gradient Text
+      </GradientText>
+    </div>
+  </Preview>
+  <CodeContent>
+  <Tabs items={["TS", "JS"]}>
+  <Tab value="TS">
+    ```tsx
+    import { GradientText } from '@/components/TextBlocks/GradientText';
+
+    export function GradientTextDemo() {
+      return (
+        <GradientText
+            colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}
+            animationSpeed={3}
+            showBorder={false}
+            className="custom-class"
+        >
+            Basic Gradient Text
+        </GradientText>
+      );
+    }
+    ```
+  </Tab>
+  <Tab value="JS">
+    ```jsx
+    import { GradientText } from '@/components/TextBlocks/GradientText';
+
+    export function GradientTextDemo() {
+      return (
+        <GradientText
+            colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}
+            animationSpeed={3}
+            showBorder={false}
+            className="custom-class"
+        >
+            Basic Gradient Text
+        </GradientText>
+      );
+    }
+    ```
+  </Tab>
+  </Tabs>
+  </CodeContent>
+</ComponentPreview>
+
+## Examples
+
+### Gradient Border
+
+<ComponentPreview>
+  <Preview>
+    <div className="flex items-center justify-center w-full p-10">
+      <GradientText
+        colors={["#ffaa40", "#9c40ff", "#ffaa40"]}
+        animationSpeed={6}
+        showBorder={true}
+        className="px-6 py-2"
+      >
+        Border Gradient
+      </GradientText>
+    </div>
+  </Preview>
+  <CodeContent>
+  <Tabs items={["TS", "JS"]}>
+  <Tab value="TS">
+    ```tsx
+    import { GradientText } from '@/components/TextBlocks/GradientText';
+
+    export function GradientBorderDemo() {
+      return (
+        <GradientText
+            colors={["#ffaa40", "#9c40ff", "#ffaa40"]}
+            animationSpeed={6}
+            showBorder={true}
+            className="px-6 py-2"
+        >
+            Border Gradient
+        </GradientText>
+      );
+    }
+    ```
+  </Tab>
+  <Tab value="JS">
+    ```jsx
+    import { GradientText } from '@/components/TextBlocks/GradientText';
+
+    export function GradientBorderDemo() {
+      return (
+        <GradientText
+            colors={["#ffaa40", "#9c40ff", "#ffaa40"]}
+            animationSpeed={6}
+            showBorder={true}
+            className="px-6 py-2"
+        >
+            Border Gradient
+        </GradientText>
+      );
+    }
+    ```
+  </Tab>
+  </Tabs>
+  </CodeContent>
+</ComponentPreview>
+
+### Polymorphic Element (H1)
+
+<ComponentPreview>
+  <Preview>
+    <div className="flex items-center justify-center w-full p-10">
+        <GradientText
+            colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}
+            animationSpeed={3}
+            showBorder={false}
+            className="text-4xl font-bold"
+            as="h1"
+        >
+            H1 Gradient Title
+        </GradientText>
+    </div>
+  </Preview>
+  <CodeContent>
+  <Tabs items={["TS", "JS"]}>
+  <Tab value="TS">
+    ```tsx
+    import { GradientText } from '@/components/TextBlocks/GradientText';
+
+    export function GradientH1Demo() {
+      return (
+        <GradientText
+            colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}
+            animationSpeed={3}
+            showBorder={false}
+            className="text-4xl font-bold"
+            as="h1"
+        >
+            H1 Gradient Title
+        </GradientText>
+      );
+    }
+    ```
+  </Tab>
+  <Tab value="JS">
+    ```jsx
+    import { GradientText } from '@/components/TextBlocks/GradientText';
+
+    export function GradientH1Demo() {
+      return (
+        <GradientText
+            colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}
+            animationSpeed={3}
+            showBorder={false}
+            className="text-4xl font-bold"
+            as="h1"
+        >
+            H1 Gradient Title
+        </GradientText>
+      );
+    }
+    ```
+  </Tab>
+  </Tabs>
+  </CodeContent>
+</ComponentPreview>
+
+## Installation
+
+<Steps>
+  <Step>
+    ### Install dependencies
+    
+    ```bash
+    npm install motion clsx tailwind-merge
+    ```
+  </Step>
+  <Step>
+    ### Copy the source code
+    
+    Copy the code into `app/components/TextBlocks/GradientText.tsx` (for TS) or `app/components/TextBlocks/GradientText.jsx` (for JS).
+
+    <Tabs items={["TS", "JS"]}>
+      <Tab value="TS">
+        ```tsx title="app/components/TextBlocks/GradientText.tsx"
+        import { cn } from "@/lib/utils";
+
+        interface GradientTextProps {
+          children: React.ReactNode;
+          className?: string;
+          colors?: string[];
+          animationSpeed?: number;
+          showBorder?: boolean;
+          animate?: boolean;
+          as?: React.ElementType;
+        }
+
+        export function GradientText({
+          children,
+          className,
+          colors = ["#ffaa40", "#9c40ff", "#ffaa40"],
+          animationSpeed = 8,
+          showBorder = false,
+          animate = true,
+          as: Component = "div",
+        }: GradientTextProps) {
+          const gradientStyle = {
+            backgroundImage: `linear-gradient(to right, ${colors.join(", ")})`,
+            animationDuration: `${animationSpeed}s`,
+          };
+
+          return (
+            <Component
+              className={cn(
+                "relative mx-auto flex max-w-fit flex-row items-center justify-center rounded-[1.25rem] font-medium transition-shadow duration-500 overflow-hidden cursor-pointer",
+                className
+              )}
+            >
+              {showBorder && (
+                <div
+                  className={cn(
+                    "absolute inset-0 bg-cover z-0 pointer-events-none animate-gradient",
+                    animate && "animate-gradient"
+                  )}
+                  style={{
+                    ...gradientStyle,
+                    backgroundSize: "300% 100%",
+                  }}
+                >
+                  <div
+                    className="absolute inset-0 bg-black rounded-[1.25rem] z-[-1]"
+                    style={{
+                      width: "calc(100% - 2px)",
+                      height: "calc(100% - 2px)",
+                      left: "50%",
+                      top: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  ></div>
+                </div>
+              )}
+              <div
+                className="inline-block relative z-2 bg-clip-text text-transparent"
+                style={{
+                  ...gradientStyle,
+                  backgroundSize: "300% 100%",
+                  animation: animate ? `gradient ${animationSpeed}s linear infinite` : undefined,
+                }}
+              >
+                {children}
+              </div>
+            </Component>
+          );
+        }
+        ```
+      </Tab>
+      <Tab value="JS">
+        ```jsx title="app/components/TextBlocks/GradientText.jsx"
+        import { cn } from "@/lib/utils";
+
+        export function GradientText({
+          children,
+          className,
+          colors = ["#ffaa40", "#9c40ff", "#ffaa40"],
+          animationSpeed = 8,
+          showBorder = false,
+          animate?: boolean;
+          as?: React.ElementType;
+        }
+
+        export function GradientText({
+          children,
+          className,
+          colors = ["#ffaa40", "#9c40ff", "#ffaa40"],
+          animationSpeed = 8,
+          showBorder = false,
+          animate = true,
+          as: Component = "div",
+        }) {
+          const gradientStyle = {
+            backgroundImage: `linear-gradient(to right, ${colors.join(", ")})`,
+            animationDuration: `${animationSpeed}s`,
+          };
+
+          return (
+            <Component
+              className={cn(
+                "relative mx-auto flex max-w-fit flex-row items-center justify-center rounded-[1.25rem] font-medium transition-shadow duration-500 overflow-hidden cursor-pointer",
+                className
+              )}
+            >
+              {showBorder && (
+                <div
+                  className={cn(
+                    "absolute inset-0 bg-cover z-0 pointer-events-none animate-gradient",
+                    animate && "animate-gradient"
+                  )}
+                  style={{
+                    ...gradientStyle,
+                    backgroundSize: "300% 100%",
+                  }}
+                >
+                  <div
+                    className="absolute inset-0 bg-black rounded-[1.25rem] z-[-1]"
+                    style={{
+                      width: "calc(100% - 2px)",
+                      height: "calc(100% - 2px)",
+                      left: "50%",
+                      top: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  ></div>
+                </div>
+              )}
+              <div
+                className="inline-block relative z-2 bg-clip-text text-transparent"
+                style={{
+                  ...gradientStyle,
+                  backgroundSize: "300% 100%",
+                  animation: animate ? `gradient ${animationSpeed}s linear infinite` : undefined,
+                }}
+              >
+                {children}
+              </div>
+            </Component>
+          );
+        }
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step>
+    ### Add Animation
+    
+    Add the keyframes to your global CSS (e.g. `app/globals.css` or `app/index.css`).
+    
+    ```css
+    @theme {
+      --animate-gradient: gradient 8s linear infinite;
+
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+    }
+    ```
+  </Step>
+</Steps>
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `children` | `ReactNode` | - | The text or content to render. |
+| `colors` | `string[]` | `["#ffaa40", "#9c40ff", "#ffaa40"]` | Array of colors for the gradient. |
+| `animationSpeed` | `number` | `8` | Animation speed in seconds. |
+| `showBorder` | `boolean` | `false` | Whether to show a gradient border. |
+| `animate` | `boolean` | `true` | Whether to animate the gradient. |
+| `className` | `string` | - | Additional CSS classes. |
+| `as` | `React.ElementType` | `div` | The HTML element to render (e.g., 'h1', 'div'). |

@@ -3,6 +3,7 @@
   "pages": [
     "text-blur",
     "long-text",
-    "tooltip"
+    "tooltip",
+    "gradient-text"
   ]
 }
