@@ -1,0 +1,229 @@
+---
+title: Confetti
+description: A customizable confetti component with button triggers, manuals triggers, and fireworks mode.
+---
+
+import { ConfettiDemo, ConfettiManual, ConfettiFireworks, ConfettiSide } from '../../app/components/ConfettiDemo';
+import { ComponentPreview, Preview, CodeContent } from '../../app/components/ComponentPreview';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'fumadocs-ui/components/type-table';
+
+## Preview
+
+<ComponentPreview>
+  <Preview>
+      <ConfettiDemo />
+  </Preview>
+  <CodeContent>
+    <Tabs items={["TS", "JS"]}>
+      <Tab value="TS">
+        ```tsx
+        import { ConfettiButton } from '@/components/ui/Confetti';
+
+        export default function ConfettiPreview() {
+            return (
+                <ConfettiButton options={{ spread: 90, particleCount: 50 }}>
+                    Click Me
+                </ConfettiButton>
+            );
+        }
+        ```
+      </Tab>
+      <Tab value="JS">
+        ```jsx
+        import { ConfettiButton } from '@/components/ui/Confetti';
+
+        export default function ConfettiPreview() {
+            return (
+                <ConfettiButton options={{ spread: 90, particleCount: 50 }}>
+                    Click Me
+                </ConfettiButton>
+            );
+        }
+        ```
+      </Tab>
+    </Tabs>
+  </CodeContent>
+</ComponentPreview>
+
+## Installation
+
+<Steps>
+  <Step>
+    ### Install dependencies
+    
+    ```bash
+    npm install canvas-confetti @types/canvas-confetti
+    ```
+  </Step>
+  <Step>
+    ### Copy the source code
+    
+    Copy the code into `app/components/ui/Confetti.tsx`.
+
+    <Tabs items={["TS"]}>
+      <Tab value="TS">
+        ```tsx title="app/components/ui/Confetti.tsx"
+        // ... (See repository for full file content)
+        // You can also reference the 'File' tab in the component preview
+        import type { ReactNode } from "react";
+        import React, {
+          createContext,
+          forwardRef,
+          useCallback,
+          useEffect,
+          useImperativeHandle,
+          useMemo,
+          useRef,
+        } from "react";
+        import confetti from "canvas-confetti";
+
+        // ... code
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+</Steps>
+
+## Examples
+
+### Manual Trigger
+
+Use `Ref` to trigger confetti programmatically.
+
+<ComponentPreview>
+  <Preview>
+    <ConfettiManual />
+  </Preview>
+  <CodeContent>
+    ```tsx
+    import { useRef } from "react";
+    import { Confetti } from "@/components/ui/Confetti";
+
+    export function ConfettiManual() {
+      const confettiRef = useRef<{ fire: (opts?: any) => void }>(null);
+
+      return (
+        <div className="flex gap-4 items-center justify-center border p-8 rounded-lg">
+            <Confetti ref={confettiRef} />
+            <button 
+                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
+                onClick={() => confettiRef.current?.fire()}
+            >
+                Fire Manual (Top Center)
+            </button>
+        </div>
+      );
+    }
+    ```
+  </CodeContent>
+</ComponentPreview>
+
+### Side Triggers
+
+Launch confetti from specific coordinates (0-1 range).
+
+<ComponentPreview>
+  <Preview>
+    <ConfettiSide />
+  </Preview>
+  <CodeContent>
+    ```tsx
+    import { ConfettiButton } from "@/components/ui/Confetti"; // Or trigger manually
+    // For manual side triggers, use canvas-confetti directly or the Confetti component's fire method
+
+    // Example logic using canvas-confetti directly for simplicity in custom handlers
+    import confetti from "canvas-confetti";
+
+    export function ConfettiSide() {
+      const fireSide = (origin: { x: number, y: number }) => {
+         confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: origin
+         });
+      }
+
+      return (
+        <div className="flex flex-wrap gap-4 justify-center">
+            <button onClick={() => fireSide({ x: 0, y: 0.5 })}>Left</button>
+            <button onClick={() => fireSide({ x: 1, y: 0.5 })}>Right</button>
+            <button onClick={() => fireSide({ x: 0.5, y: 1 })}>Bottom</button>
+        </div>
+      );
+    }
+    ```
+  </CodeContent>
+</ComponentPreview>
+
+### Fireworks Mode
+
+Create a fireworks effect using intervals.
+
+<ComponentPreview>
+  <Preview>
+    <ConfettiFireworks />
+  </Preview>
+  <CodeContent>
+    ```tsx
+    import confetti from "canvas-confetti";
+
+    export function ConfettiFireworks() {
+      const fireFireworks = () => {
+        const duration = 5 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        const randomInRange = (min: number, max: number) =>
+          Math.random() * (max - min) + min;
+
+        const interval: any = setInterval(function () {
+          const timeLeft = animationEnd - Date.now();
+
+          if (timeLeft <= 0) {
+            return clearInterval(interval);
+          }
+
+          const particleCount = 50 * (timeLeft / duration);
+          confetti({
+            ...defaults,
+            particleCount,
+            origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+          });
+          confetti({
+            ...defaults,
+            particleCount,
+            origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+          });
+        }, 250);
+      };
+
+      return (
+          <button onClick={fireFireworks}>
+              Launch Fireworks
+          </button>
+      );
+    }
+    ```
+  </CodeContent>
+</ComponentPreview>
+
+## Props
+
+### Confetti (Component)
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `options` | `ConfettiOptions` | - | Default options for the confetti instance. |
+| `manualstart` | `boolean` | `false` | If false, fires on mount. If true, waits for manual trigger. |
+| `resize` | `boolean` | `true` | Whether to allow the confetti canvas to resize. |
+| `useWorker` | `boolean` | `true` | Whether to use a web worker for rendering. |
+
+### ConfettiButton
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `options` | `ConfettiOptions` | - | Options for the confetti fired on click. Origin is automatically set to button center. |
+| `...props` | `ButtonHTMLAttributes` | - | Standard button attributes (onClick, className, etc). |
+
