@@ -4,4 +4,5 @@ export default [
   index('routes/home.tsx'),
   route('docs/*', 'docs/page.tsx'),
   route('api/search', 'docs/search.ts'),
+  route('text-flip-demo', 'routes/text-flip-demo.tsx'),
 ] satisfies RouteConfig;

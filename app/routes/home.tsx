@@ -6,8 +6,8 @@ import { baseOptions } from '@/lib/layout.shared';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'New React Router App' },
-    { name: 'description', content: 'Welcome to React Router!' },
+    { title: 'Tasteey' },
+    { name: 'description', content: 'Welcome to Tasteey UI!' },
   ];
 }
 
