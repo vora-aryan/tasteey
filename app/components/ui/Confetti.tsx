@@ -37,21 +37,6 @@ const Confetti = forwardRef<ConfettiRef, ConfettiProps>((props, ref) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const confettiInstance = useRef<confetti.CreateTypes | null>(null);
 
-  // Initialize the confetti instance
-  useEffect(() => {
-     // If we wanted to use a specific canvas, we would init it here.
-     // However, canvas-confetti's default is global.
-     // But to support component-contained confetti, we might want to use a canvas.
-     // The user asked for "from button", "side of web page".
-     // Usually people want strict control.
-     // Let's use the global instance for ease of "page relative"
-     // But if we defined `canvasRef`, we could use that.
-     // For now, let's stick to the request: "triggers like button click... from side of web page".
-     // Global confetti is best for "side of page". "From button" is also usually global but with origin set to button's position.
-     return () => {
-       // cleanup if needed
-     }
-  }, []);
 
   const fire = useCallback(
     (opts: ConfettiOptions = {}) => {
@@ -77,10 +62,6 @@ const Confetti = forwardRef<ConfettiRef, ConfettiProps>((props, ref) => {
 
   return (
     <ConfettiContext.Provider value={{ fire }}>
-      {/* We are using global confetti so no canvas rendered here unless requested, 
-          but usually for React components we might want a localized one. 
-          Given the prompt "side of web page", "button click", global is appropriate. 
-      */}
       {props.children}
     </ConfettiContext.Provider>
   );

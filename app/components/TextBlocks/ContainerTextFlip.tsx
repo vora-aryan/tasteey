@@ -17,7 +17,6 @@ export const ContainerTextFlip: React.FC<ContainerTextFlipProps> = ({
   const [width, setWidth] = useState<number | 'auto'>('auto');
   const textRef = useRef<HTMLDivElement>(null);
 
-  // Cycle through words
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % words.length);
@@ -25,10 +24,8 @@ export const ContainerTextFlip: React.FC<ContainerTextFlipProps> = ({
     return () => clearInterval(timer);
   }, [words.length, interval]);
 
-  // Measure width
   useEffect(() => {
     if (textRef.current) {
-        // Add padding to the measured width
       setWidth(textRef.current.scrollWidth + 40); 
     }
   }, [index, words]);
@@ -43,13 +40,10 @@ export const ContainerTextFlip: React.FC<ContainerTextFlipProps> = ({
         transition={{ duration: 0.4, ease: "easeInOut" }}
         className={cn(
             "relative flex justify-center items-center overflow-hidden rounded-xl h-24 sm:h-32",
-            // Light Mode: Gray gradient + 3D distinct shadows
             "bg-gradient-to-b from-gray-50 to-gray-200 shadow-[inset_0_-4px_4px_rgba(0,0,0,0.1),0_4px_6px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)]",
-            // Dark Mode: Dark gray gradient + dark shadows/borders
             "dark:from-neutral-800 dark:to-neutral-900 dark:shadow-[inset_0_-2px_4px_rgba(0,0,0,0.5),0_4px_6px_rgba(0,0,0,0.3)] dark:border dark:border-neutral-700",className
         )}
       >
-        {/* Invisible measuring element */}
         <div
           ref={textRef}
           className="absolute opacity-0 pointer-events-none whitespace-nowrap text-4xl sm:text-7xl font-bold px-8"
@@ -58,7 +52,6 @@ export const ContainerTextFlip: React.FC<ContainerTextFlipProps> = ({
           {currentWord}
         </div>
 
-        {/* Visible animated text */}
         <div className="flex gap-[2px] items-center z-10 font-bold text-gray-800 dark:text-gray-100 text-4xl sm:text-7xl select-none">
           <AnimatePresence mode="popLayout">
              {characters.map((char, i) => (
@@ -80,7 +73,6 @@ export const ContainerTextFlip: React.FC<ContainerTextFlipProps> = ({
           </AnimatePresence>
         </div>
         
-        {/* Subtle highlight for 3D effect */}
         <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent pointer-events-none" />
       </motion.div>
     </div>
