@@ -14,7 +14,7 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   return (
     <HomeLayout {...baseOptions()}>
-      <div className="relative flex flex-col items-center justify-center text-center flex-1 w-full max-w-5xl mx-auto px-4 py-24 sm:py-32">
+      <div className="relative flex flex-col items-center justify-center text-center flex-1 w-full max-w-5xl mx-auto px-4 py-24 sm:py-32 overflow-x-hidden">
         <motion.div
            initial={{ opacity: 0, y: 20 }}
            animate={{ opacity: 1, y: 0 }}
@@ -31,8 +31,8 @@ export default function Home() {
             Tasteey
           </h1>
           
-          <p className="mt-6 text-lg leading-8 text-fd-muted-foreground max-w-2xl mx-auto">
-            A premium collection of high-performance UI components built with standard Tailwind CSS and Framer Motion. flexible, beautiful, and ready for production.
+          <p className="mt-6 text-2xl leading-8 text-fd-muted-foreground max-w-2xl mx-auto">
+          No BS, Just Copy, Paste, and Customize.
           </p>
           
           <div className="mt-10 flex items-center justify-center gap-x-6">
